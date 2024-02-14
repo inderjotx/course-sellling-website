@@ -15,6 +15,20 @@
       "when": 1707895323840,
       "tag": "0001_melodic_magik",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707897011001,
+      "tag": "0002_young_cargill",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1707897212368,
+      "tag": "0003_lively_dark_beast",
+      "breakpoints": true
     }
   ]
 }

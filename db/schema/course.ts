@@ -8,7 +8,8 @@ import {
     integer,
     PgTable,
     pgEnum,
-    serial
+    serial,
+    boolean
 } from "drizzle-orm/pg-core"
 import { realpathSync } from "fs"
 import { users } from "./user"
@@ -23,8 +24,26 @@ export const course = pgTable("course", {
     title: text("title").notNull(),
     description: text("description").notNull(),
     thumbnail: text("thumbnail").notNull(),
-    price: integer("price").notNull()
+    price: integer("price").notNull(),
+    creatorId: integer("creatorId").notNull().references(() => users.id, { onDelete: "cascade" })
 })
+
+
+
+export const chapter = pgTable("chapter", {
+    id: serial("id").notNull().primaryKey(),
+    isPublished: boolean("isPublished").default(false),
+    isPublic: boolean("isPublic").default(false),
+    description: text("description").notNull(),
+    videoUrl: text("videoUrl").notNull(),
+    title: text("title").notNull(),
+    courseId: integer("courseId").notNull().references(() => course.creatorId, { onDelete: "cascade" })
+})
+
+
+
+
+
 
 
 export const contentType = pgEnum("contentType", ["video", "notes"])
@@ -37,7 +56,7 @@ export const content = pgTable("content", {
     description: text("description").notNull(),
     contentType: contentType('contentType'),
     courseId: integer("courseId").references(() => course.id, { onDelete: "cascade" }),
-    segmentId: integer("segmentId ").references(() => segment.id, { onDelete: "cascade" })
+    segmentId: integer("segmentId").references(() => segment.id, { onDelete: "cascade" })
 })
 
 
@@ -97,10 +116,14 @@ export const segmentContent = relations(segment, ({ many, one }) => ({
 // one course -> many segment
 // one course -> many content 
 // one course -> many users 
-export const courseSegments = relations(course, ({ many }) => ({
+export const courseSegments = relations(course, ({ many, one }) => ({
     segment: many(segment),
     videos: many(content),
     users: many(userRelationCourse),
+    creator: one(users, {
+        fields: [course.creatorId],
+        references: [users.id]
+    })
 }))
 
 
