@@ -8,6 +8,13 @@
       "when": 1707809214086,
       "tag": "0000_real_legion",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1707895323840,
+      "tag": "0001_melodic_magik",
+      "breakpoints": true
     }
   ]
 }
