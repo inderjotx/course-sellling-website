@@ -1,0 +1,1 @@
+ALTER TABLE "course" ALTER COLUMN "creatorId" SET DATA TYPE text;

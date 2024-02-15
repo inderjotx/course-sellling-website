@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrations": "npx drizzle-kit generate:pg"
+    "migrations": "npx drizzle-kit generate:pg && npx drizzle-kit push:pg "
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.6.3",

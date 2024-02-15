@@ -1,20 +1,13 @@
 import { relations, sql } from "drizzle-orm"
-import { int } from "drizzle-orm/mysql-core"
 import {
-    timestamp,
     pgTable,
     text,
     primaryKey,
     integer,
-    PgTable,
-    pgEnum,
     serial,
     boolean
 } from "drizzle-orm/pg-core"
-import { realpathSync } from "fs"
 import { users } from "./user"
-import notion from "next-auth/providers/notion"
-import { Inter_Tight } from "next/font/google"
 
 
 
@@ -25,7 +18,8 @@ export const course = pgTable("course", {
     description: text("description").notNull(),
     thumbnail: text("thumbnail").notNull(),
     price: integer("price").notNull(),
-    creatorId: integer("creatorId").notNull().references(() => users.id, { onDelete: "cascade" })
+    creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" })
+
 })
 
 
@@ -37,32 +31,17 @@ export const chapter = pgTable("chapter", {
     description: text("description").notNull(),
     videoUrl: text("videoUrl").notNull(),
     title: text("title").notNull(),
-    courseId: integer("courseId").notNull().references(() => course.creatorId, { onDelete: "cascade" })
+    courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" })
 })
 
 
 
 
-
-
-
-export const contentType = pgEnum("contentType", ["video", "notes"])
-
-
-
-export const content = pgTable("content", {
-    id: serial("id").notNull().primaryKey(),
-    title: text("title").notNull(),
-    description: text("description").notNull(),
-    contentType: contentType('contentType'),
-    courseId: integer("courseId").references(() => course.id, { onDelete: "cascade" }),
-    segmentId: integer("segmentId").references(() => segment.id, { onDelete: "cascade" })
-})
 
 
 export const userRelationCourse = pgTable("userRelationCourse", {
     courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" }),
-    userId: integer("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
 }
     ,
     (table) => ({
@@ -72,90 +51,26 @@ export const userRelationCourse = pgTable("userRelationCourse", {
 
 
 
-export const segment = pgTable("segment", {
-    id: serial("id").notNull().primaryKey(),
-    title: text("title").notNull(),
-    description: text("description").notNull(),
-    courseId: integer("courseId").references(() => course.id, { onDelete: "cascade" })
-})
-
-
-
-// yet to add one 
-export const videoMetadata = pgTable("videoMetadata", {
-    id: serial("id").notNull().primaryKey(),
-    url: text("url").notNull(),
-    size: integer("size").notNull(),
-    uploadedOn: timestamp("uploadedOn").default(sql`CURRENT_TIMESTAMP`),
-    contentId: integer("contentId").references(() => content.id, { onDelete: "cascade" })
-})
-
-
-// yet to add 
-export const notionMetadata = pgTable("notionMetadata", {
-    id: serial("id").notNull().primaryKey(),
-    url: text("url").notNull(),
-    size: integer("size").notNull(),
-    uploadedOn: timestamp("uploadedOn").default(sql`CURRENT_TIMESTAMP`),
-    contentId: integer("contentId").references(() => content.id, { onDelete: "cascade" })
-})
-
-
-
-// one segment -> many content
-export const segmentContent = relations(segment, ({ many, one }) => ({
-    content: many(content),
-    course: one(course, {
-        fields: [segment.courseId],
-        references: [course.id]
-    })
-}))
-
-
-
-// one course -> many segment
-// one course -> many content 
 // one course -> many users 
 export const courseSegments = relations(course, ({ many, one }) => ({
-    segment: many(segment),
-    videos: many(content),
+    chapters: many(chapter),
     users: many(userRelationCourse),
     creator: one(users, {
         fields: [course.creatorId],
-        references: [users.id]
+        references: [users.id],
+        relationName: "creator_name"
     })
 }))
 
 
-export const videoMetadataRelation = relations(videoMetadata, ({ one }) => ({
-
-    course: one(content, {
-        fields: [videoMetadata.contentId],
-        references: [content.id]
-    })
-
-}))
-
-
-
-
-
-
-// content - metadata 
-// content - notionMetadata 
-export const contentVideo = relations(content, ({ one }) => ({
-    videoMetadata: one(videoMetadata),
-    notionMetadata: one(notionMetadata),
+export const courseRchapter = relations(chapter, ({ one }) => ({
     course: one(course, {
-        fields: [content.courseId],
+        fields: [chapter.courseId],
         references: [course.id]
     })
-    ,
-    segment: one(segment, {
-        fields: [content.segmentId],
-        references: [segment.id]
-    })
-}));
+
+}))
+
 
 
 
@@ -163,15 +78,6 @@ export const contentVideo = relations(content, ({ one }) => ({
 export const userManyuserCourse = relations(users, ({ many }) => ({
     courses: many(userRelationCourse)
 }))
-
-
-export const notionMetaDataRelation = relations(notionMetadata, ({ one }) => ({
-    course: one(content, {
-        fields: [notionMetadata.contentId],
-        references: [content.id]
-    })
-    ,
-}));
 
 
 

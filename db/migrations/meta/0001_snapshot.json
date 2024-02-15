@@ -1,11 +1,11 @@
 {
-  "id": "7aff5f5e-c642-4631-a790-c5afd6479ab9",
-  "prevId": "b6b5f3e3-0c65-4284-9857-5edbe3b08436",
+  "id": "0ca176a9-4e5c-4cce-b551-b030a1878b7e",
+  "prevId": "36f1e02e-acf8-4f6c-8b1a-91cae3609c26",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "content": {
-      "name": "content",
+    "chapter": {
+      "name": "chapter",
       "schema": "",
       "columns": {
         "id": {
@@ -14,11 +14,19 @@
           "primaryKey": true,
           "notNull": true
         },
-        "title": {
-          "name": "title",
-          "type": "text",
+        "isPublished": {
+          "name": "isPublished",
+          "type": "boolean",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": false
+        },
+        "isPublic": {
+          "name": "isPublic",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "description": {
           "name": "description",
@@ -26,46 +34,33 @@
           "primaryKey": false,
           "notNull": true
         },
-        "contentType": {
-          "name": "contentType",
-          "type": "contentType",
+        "videoUrl": {
+          "name": "videoUrl",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "courseId": {
           "name": "courseId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
-        },
-        "segmentId ": {
-          "name": "segmentId ",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "content_courseId_course_id_fk": {
-          "name": "content_courseId_course_id_fk",
-          "tableFrom": "content",
+        "chapter_courseId_course_id_fk": {
+          "name": "chapter_courseId_course_id_fk",
+          "tableFrom": "chapter",
           "tableTo": "course",
           "columnsFrom": [
             "courseId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "content_segmentId _segment_id_fk": {
-          "name": "content_segmentId _segment_id_fk",
-          "tableFrom": "content",
-          "tableTo": "segment",
-          "columnsFrom": [
-            "segmentId "
           ],
           "columnsTo": [
             "id"
@@ -110,105 +105,22 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "notionMetadata": {
-      "name": "notionMetadata",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
         },
-        "url": {
-          "name": "url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "size": {
-          "name": "size",
+        "creatorId": {
+          "name": "creatorId",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
-        },
-        "uploadedOn": {
-          "name": "uploadedOn",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "contentId": {
-          "name": "contentId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "notionMetadata_contentId_content_id_fk": {
-          "name": "notionMetadata_contentId_content_id_fk",
-          "tableFrom": "notionMetadata",
-          "tableTo": "content",
+        "course_creatorId_user_id_fk": {
+          "name": "course_creatorId_user_id_fk",
+          "tableFrom": "course",
+          "tableTo": "user",
           "columnsFrom": [
-            "contentId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "segment": {
-      "name": "segment",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "courseId": {
-          "name": "courseId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "segment_courseId_course_id_fk": {
-          "name": "segment_courseId_course_id_fk",
-          "tableFrom": "segment",
-          "tableTo": "course",
-          "columnsFrom": [
-            "courseId"
+            "creatorId"
           ],
           "columnsTo": [
             "id"
@@ -275,61 +187,6 @@
           ]
         }
       },
-      "uniqueConstraints": {}
-    },
-    "videoMetadata": {
-      "name": "videoMetadata",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "url": {
-          "name": "url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "size": {
-          "name": "size",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "uploadedOn": {
-          "name": "uploadedOn",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "CURRENT_TIMESTAMP"
-        },
-        "contentId": {
-          "name": "contentId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "videoMetadata_contentId_content_id_fk": {
-          "name": "videoMetadata_contentId_content_id_fk",
-          "tableFrom": "videoMetadata",
-          "tableTo": "content",
-          "columnsFrom": [
-            "contentId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "account": {
@@ -549,15 +406,7 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {
-    "contentType": {
-      "name": "contentType",
-      "values": {
-        "video": "video",
-        "notes": "notes"
-      }
-    }
-  },
+  "enums": {},
   "schemas": {},
   "_meta": {
     "columns": {},

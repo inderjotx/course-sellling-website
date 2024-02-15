@@ -1,0 +1,1 @@
+ALTER TABLE "userRelationCourse" ALTER COLUMN "userId" SET DATA TYPE text;

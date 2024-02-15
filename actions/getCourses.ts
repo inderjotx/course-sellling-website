@@ -15,4 +15,13 @@ export async function getCourses() {
     }
 
 
+    const data = await db.query.course.findMany({
+        where(fields, operators) {
+            return operators.ilike(fields.creatorId, session.user.id)
+        },
+    })
+
+
+    return data;
+
 }
