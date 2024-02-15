@@ -15,9 +15,9 @@ import { users } from "./user"
 export const course = pgTable("course", {
     id: serial("id").notNull().primaryKey(),
     title: text("title").notNull(),
-    description: text("description").notNull(),
-    thumbnail: text("thumbnail").notNull(),
-    price: integer("price").notNull(),
+    description: text("description"),
+    thumbnail: text("thumbnail"),
+    price: integer("price"),
     creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" }),
     isArchived: boolean("isArchived").notNull().default(false)
 
