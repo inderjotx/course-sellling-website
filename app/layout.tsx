@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { Navbar } from "@/components/navbar";
 import Link from "next/link";
 import { headers } from "next/headers";
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -54,6 +55,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning >
             <body className={inter.className}>
                 <Navbar />
+                <Toaster />
                 <div className="flex h-screen w-full" >
                     <div className="hidden lg:flex flex-col items-start border h-full  lg:w-1/6  ">
                         {

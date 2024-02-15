@@ -6,15 +6,16 @@ import { Button } from '@/components/ui/button'
 import { simplePathCourse } from '@/actions/simplePatchCourse'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import { Textarea } from '@/components/ui/textarea'
 
 
 
 
-export function TitleForm({ title, id }: { title: string, id: string }) {
+export function DescriptionForm({ description, id }: { description: string, id: string }) {
 
 
     const [editable, setEditable] = useState<boolean>(false)
-    const [courseTitle, setCourseTitle] = useState<string>(title)
+    const [courseDescription, setCourseDescription] = useState<string>(description)
     const router = useRouter()
 
 
@@ -23,15 +24,15 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
 
 
         setEditable(false)
-        const response = await simplePathCourse(id, "title", courseTitle)
+        const response = await simplePathCourse(id, "description", courseDescription)
         console.log(response)
-        if (response != courseTitle) {
-            setCourseTitle("")
-            toast.error("Error Updating Title, Retry")
+        if (response != courseDescription) {
+            setCourseDescription("")
+            toast.error("Error Updating Description, Retry")
         }
         else {
             router.refresh()
-            toast.success("Title update Successfully")
+            toast.success(" Description updated Successfully")
         }
 
     }
@@ -40,7 +41,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
     return (
         <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md font-semibold'>Course Title </h1>
+                <h1 className='text-md  font-semibold'>Course  Description</h1>
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                     {
                         editable ?
@@ -51,7 +52,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
 
                             <>
                                 <Pencil className='h-3 w-3 '></Pencil>
-                                <span className='text-[11px] lg:text-[14px]  '>Edit Title</span>
+                                <span className='text-[11px] lg:text-[14px]  '>Edit Description</span>
                             </>
                     }
                 </div>
@@ -61,7 +62,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
                 {
                     editable ?
                         <div className='flex flex-col gap-3'>
-                            <Input value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)}  ></Input>
+                            <Textarea value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)}  ></Textarea>
                             <div>
                                 <Button onClick={handleUpdate} className='rounded-xl' variant={"default"} size={"sm"}>Save</Button>
                             </div>
@@ -70,7 +71,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
                         :
 
                         <div className='font-light text-sm'>
-                            {title}
+                            {description}
                         </div>
                 }
             </div>
