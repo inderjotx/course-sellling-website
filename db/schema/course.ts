@@ -18,7 +18,8 @@ export const course = pgTable("course", {
     description: text("description").notNull(),
     thumbnail: text("thumbnail").notNull(),
     price: integer("price").notNull(),
-    creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" })
+    creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    isArchived: boolean("isArchived").notNull().default(false)
 
 })
 
