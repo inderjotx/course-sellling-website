@@ -16,6 +16,7 @@ export const course = pgTable("course", {
     id: serial("id").notNull().primaryKey(),
     title: text("title").notNull(),
     description: text("description"),
+    isPublished: boolean("isPublished").default(false),
     thumbnail: text("thumbnail"),
     price: integer("price"),
     creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" }),
@@ -29,9 +30,10 @@ export const chapter = pgTable("chapter", {
     id: serial("id").notNull().primaryKey(),
     isPublished: boolean("isPublished").default(false),
     isPublic: boolean("isPublic").default(false),
-    description: text("description").notNull(),
-    videoUrl: text("videoUrl").notNull(),
+    description: text("description"),
+    videoUrl: text("videoUrl"),
     title: text("title").notNull(),
+    order: integer("order").notNull(),
     courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" })
 })
 

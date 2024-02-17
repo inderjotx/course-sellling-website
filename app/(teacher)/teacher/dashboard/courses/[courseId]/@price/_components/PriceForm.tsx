@@ -6,15 +6,16 @@ import { Button } from '@/components/ui/button'
 import { simplePathCourse } from '@/actions/simplePatchCourse'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import { toDollar } from '@/lib/formatCurrency'
 
 
 
 
-export function TitleForm({ title, id }: { title: string, id: string }) {
+export function PriceForm({ price, id }: { price: string, id: string }) {
 
 
     const [editable, setEditable] = useState<boolean>(false)
-    const [courseTitle, setCourseTitle] = useState<string>(title)
+    const [coursePrice, setcoursePrice] = useState<string>(price)
     const router = useRouter()
 
 
@@ -23,35 +24,35 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
 
 
         setEditable(false)
-        const response = await simplePathCourse(id, "title", courseTitle)
+        const response = await simplePathCourse(id, "price", parseInt(coursePrice))
         console.log(response)
-        if (response != courseTitle) {
-            setCourseTitle("")
-            toast.error("Error Updating Title, Retry")
+        if (response != coursePrice) {
+            setcoursePrice("")
+            toast.error("Error Updating Price, Retry")
         }
         else {
             router.refresh()
-            toast.success("Title update Successfully")
+            toast.success("Price update Successfully")
         }
 
     }
 
 
     return (
-        <div draggable className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
+        <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md font-semibold'>Course Title </h1>
+                <h1 className='text-md font-semibold'>Course Price</h1>
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                     {
                         editable ?
                             <>
-                                <Button variant={"link"} > Cancel </Button>
+                                <Button variant={"ghost"} > Cancel </Button>
                             </>
                             :
 
                             <>
                                 <Pencil className='h-3 w-3 '></Pencil>
-                                <span className='text-[11px] lg:text-[14px]  '>Edit Title</span>
+                                <span className='text-[11px] lg:text-[14px]  '>Edit Price</span>
                             </>
                     }
                 </div>
@@ -61,7 +62,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
                 {
                     editable ?
                         <div className='flex flex-col gap-3'>
-                            <Input value={courseTitle} onChange={(e) => setCourseTitle(e.target.value)}  ></Input>
+                            <Input type='number' value={coursePrice} onChange={(e) => setcoursePrice(e.target.value)}  ></Input>
                             <div>
                                 <Button onClick={handleUpdate} className='' variant={"default"} size={"sm"}>Save</Button>
                             </div>
@@ -70,7 +71,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
                         :
 
                         <div className='font-light text-sm'>
-                            {title}
+                            {coursePrice != "" ? `${toDollar(coursePrice)}` : ""}
                         </div>
                 }
             </div>

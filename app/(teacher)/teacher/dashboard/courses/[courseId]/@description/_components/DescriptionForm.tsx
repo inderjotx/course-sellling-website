@@ -64,13 +64,13 @@ export function DescriptionForm({ description, id }: { description: string, id: 
                         <div className='flex flex-col gap-3'>
                             <Textarea value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)}  ></Textarea>
                             <div>
-                                <Button onClick={handleUpdate} className='rounded-xl' variant={"default"} size={"sm"}>Save</Button>
+                                <Button onClick={handleUpdate} className='' variant={"default"} size={"sm"}>Save</Button>
                             </div>
                         </div>
 
                         :
 
-                        <div className='font-light text-sm'>
+                        <div className='font-light italic text-sm'>
                             {description}
                         </div>
                 }

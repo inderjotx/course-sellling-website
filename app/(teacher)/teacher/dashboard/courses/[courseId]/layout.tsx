@@ -1,7 +1,10 @@
 import { Heading } from '@/components/Heading'
 import { LayoutDashboard, LayoutTemplate } from 'lucide-react'
 import React from 'react'
-
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/lib/uploadThing";
+import { CourseBadge } from '@/components/CourseBadge';
 
 export default function layout({
     attachment,
@@ -23,18 +26,20 @@ export default function layout({
         <div className='flex w-full h-screen flex-col'>
             <div className='flex px-4  mt-2'>
                 <Heading title={"Create Setup"} description={"Complete all fields"} />
-                {/* <div className='mb-4 text-xl flex gap-2 items-center font-semibold'>Create</div> */}
             </div>
             <div className='flex w-full h-full '>
-                <div className=' flex flex-col w-1/2 gap-4  px-4 py-4'>
+                <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>
                     {/* first three block */}
-                    <div className='mb-4 text-xl flex gap-2 items-center font-semibold'> <div className='text-blue-700 p-2 rounded-full bg-blue-100'><LayoutDashboard className='w-6 h-6 '></LayoutDashboard></div> <span>Cutsomize Your Course</span></div>
+                    <CourseBadge Icon={LayoutDashboard} Heading='Customize Your Course' >
+                    </CourseBadge>
+                    <NextSSRPlugin
+                        routerConfig={extractRouterConfig(ourFileRouter)} />
                     {title}
                     {description}
                     {image}
                 </div>
 
-                <div className=' flex flex-col w-1/2 gap-4 py-4  px-4'>
+                <div className=' flex flex-col w-1/2 gap-6 py-4  px-4'>
                     {/* other three block */}
                     {chapters}
                     {price}
