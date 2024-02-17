@@ -39,6 +39,20 @@ export const chapter = pgTable("chapter", {
 })
 
 
+export const muxData = pgTable("muxData", {
+    id: serial("id").notNull().primaryKey(),
+    chapterId: integer("chapterId").notNull().references(() => chapter.id, { onDelete: "cascade" }),
+    playbackId: text("playbackId").notNull(),
+    assetId: text("assetId").notNull()
+})
+
+
+export const muxDataChapter = relations(muxData, ({ one }) => ({
+    chapter: one(chapter, {
+        fields: [muxData.chapterId],
+        references: [chapter.id],
+    })
+}))
 
 
 
@@ -67,7 +81,7 @@ export const courseSegments = relations(course, ({ many, one }) => ({
 }))
 
 
-export const courseRchapter = relations(chapter, ({ one }) => ({
+export const courseRchapter = relations(chapter, ({ one, many }) => ({
     course: one(course, {
         fields: [chapter.courseId],
         references: [course.id]
@@ -77,7 +91,8 @@ export const courseRchapter = relations(chapter, ({ one }) => ({
         fields: [chapter.creatorId],
         references: [users.id]
     })
-
+    ,
+    muxData: many(muxData)
 }))
 
 
