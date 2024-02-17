@@ -8,23 +8,18 @@ import toast from 'react-hot-toast'
 import { addChapter } from '@/actions/addChapter'
 import ChapterColumn from './ChapterColumn'
 import { CourseBadge } from '@/components/CourseBadge'
+import { Chapter } from '@/db'
 
 
 
-interface ChapterFormProps {
-    title: string,
-    id: number,
-    order: number,
-    isPublished: boolean | null
-}
 
 
-export const ChapterForm = ({ chapters, id }: { chapters: ChapterFormProps[], id: string }) => {
+export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string }) => {
 
     console.log('chpater form')
     const [editable, setEditable] = useState<boolean>(false)
     const [newChapter, setNewChapter] = useState<string>("")
-    const [courseChapters, setcourseChapters] = useState<ChapterFormProps[]>(chapters)
+    const [courseChapters, setcourseChapters] = useState<Chapter[]>(chapters)
     const [fetch, setFetch] = useState(false)
     const router = useRouter()
     const startPos = useRef<number>(0)
@@ -85,7 +80,6 @@ export const ChapterForm = ({ chapters, id }: { chapters: ChapterFormProps[], id
     return (
         <div className='flex w-full h-full flex-col gap-2'>
             <CourseBadge Icon={List} Heading={'Course Chapters'} />
-
             <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
                 <div className='flex items-center justify-between'>
                     <h1 className='text-md font-semibold'>Course Title </h1>
@@ -93,7 +87,7 @@ export const ChapterForm = ({ chapters, id }: { chapters: ChapterFormProps[], id
                         {
                             editable ?
                                 <>
-                                    <Button variant={"ghost"} > Cancel </Button>
+                                    <Button variant={"link"} > Cancel </Button>
                                 </>
                                 :
 
@@ -107,14 +101,14 @@ export const ChapterForm = ({ chapters, id }: { chapters: ChapterFormProps[], id
                 <div className='flex p-2 w-full gap-3 flex-col px-2'>
                     {
 
-                        chapters.map((chapter, index) => (
+                        courseChapters.map((chapter, index) => (
                             <div key={index}
                                 draggable
                                 onDragStart={() => startPos.current = index}
                                 onDragEnter={() => endPos.current = index}
                                 onDragEnd={async () => await changePostion()}
                                 className='w-full rounded-md overflow-hidden'  >
-                                <ChapterColumn title={chapter.title} id={chapter.order} isPublished={chapter.isPublished} />
+                                <ChapterColumn title={chapter.title} courseId={chapter.courseId} chapterId={chapter.id} isPublished={chapter.isPublished} />
                             </div>
                         ))
                     }

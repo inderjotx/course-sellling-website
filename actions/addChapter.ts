@@ -22,7 +22,6 @@ export const addChapter = async (courseId: number, chapterTitle: string) => {
 
         const response = await db.insert(chapter).values({ title: chapterTitle, courseId: courseId, order: length }).returning({ title: chapter.title })
         console.log(response[0].title)
-        revalidatePath("/teacher/dashboard/courses/1")
         return true
     }
 

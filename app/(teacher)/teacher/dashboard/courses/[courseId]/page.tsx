@@ -1,5 +1,5 @@
 import { Heading } from '@/components/Heading'
-import { LayoutDashboard } from 'lucide-react'
+import { LayoutDashboard, Trash, Trash2 } from 'lucide-react'
 import React from 'react'
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
@@ -11,9 +11,11 @@ import { ImageForm } from './_components/ImageForm';
 import { ChapterForm } from './_components/ChapterForm';
 import { PriceForm } from './_components/PriceForm';
 import { auth, signIn } from '@/auth';
-import { redirect } from 'next/dist/server/api-utils';
 import { db } from '@/db';
-import { time } from 'console';
+import { Button } from '@/components/ui/button';
+
+
+
 
 export default async function page({ params }: { params: { courseId: string } }) {
 
@@ -27,15 +29,19 @@ export default async function page({ params }: { params: { courseId: string } })
         where(fields, operators) {
             return operators.and(operators.eq(fields.id, parseInt(params.courseId)), operators.eq(fields.creatorId, session!.user.id))
         },
+        with: {
+            chapters: true
+        }
     })
 
 
 
 
     return (
-        <div className='flex w-full h-screen flex-col'>
-            <div className='flex px-4  mt-2'>
+        <div className='flex w-full h-screen flex-col gap-6'>
+            <div className='flex px-4 justify-between mr-3 items-center mt-2'>
                 <Heading title={"Create Setup"} description={"Complete all fields"} />
+                <Button variant={"destructive"} size={"icon"} ><Trash2></Trash2> </Button>
             </div>
             <div className='flex w-full h-full '>
                 <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>
@@ -53,7 +59,7 @@ export default async function page({ params }: { params: { courseId: string } })
 
                 <div className=' flex flex-col w-1/2 gap-6 py-4  px-4'>
                     {/* other three block */}
-                    <ChapterForm chapters={[]} id={params.courseId} />
+                    <ChapterForm chapters={course?.chapters || []} id={params.courseId} />
                     <PriceForm price={course?.price?.toString() || ""} id={params.courseId} />
                 </div>
             </div>

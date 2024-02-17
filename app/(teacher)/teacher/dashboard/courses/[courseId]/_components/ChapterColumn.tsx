@@ -1,3 +1,4 @@
+'use client'
 import { Badge } from '@/components/ui/badge'
 import { Grip, Pencil } from 'lucide-react'
 import Link from 'next/link'
@@ -5,13 +6,16 @@ import React from 'react'
 
 
 interface ChapterColumnInterface {
-    id: number,
+    courseId: number,
+    chapterId: number,
     title: string,
     isPublished: boolean | null
 }
 
-export default function ChapterColumn({ title, id, isPublished }: ChapterColumnInterface) {
+export default function ChapterColumn({ title, chapterId, courseId, isPublished }: ChapterColumnInterface) {
     console.log(title)
+
+
     return (
         <div className='w-full h-10 flex items-center overflow-hidden pr-1 rounded-md bg-blue-100/80'>
 
@@ -24,7 +28,7 @@ export default function ChapterColumn({ title, id, isPublished }: ChapterColumnI
             </div>
             <div className='ml-auto flex   h-full items-center'>
                 <Badge className=''>{isPublished ? "Active" : "Drafted"}</Badge>
-                <Link href={`/teachter/dashboard/courses/ /chapter/${id}`} >
+                <Link href={`/teacher/dashboard/courses/${courseId}/chapter/${chapterId}`} >
                     <div className='p-2  h-full flex items-center'>
                         <Pencil className='h-3 w-3'></Pencil>
                     </div>
