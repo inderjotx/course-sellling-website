@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea'
 export function DescriptionForm({ description, id }: { description: string, id: string }) {
 
 
+    console.log('descritpion clietn')
     const [editable, setEditable] = useState<boolean>(false)
     const [courseDescription, setCourseDescription] = useState<string>(description)
     const router = useRouter()

@@ -20,17 +20,16 @@ interface ChapterFormProps {
 }
 
 
-export const ChapterForm = ({ courseId }: { courseId: string }) => {
+export const ChapterForm = ({ chapters, courseId }: { chapters: ChapterFormProps[], courseId: string }) => {
 
-
+    console.log('chpater form')
     const [editable, setEditable] = useState<boolean>(false)
     const [newChapter, setNewChapter] = useState<string>("")
-    const [courseChapters, setcourseChapters] = useState<ChapterFormProps[]>([])
+    const [courseChapters, setcourseChapters] = useState<ChapterFormProps[]>(chapters)
     const [fetch, setFetch] = useState(false)
     const router = useRouter()
     const startPos = useRef<number>(0)
     const endPos = useRef<number>(0)
-
 
 
     const changePostion = async () => {
@@ -77,7 +76,7 @@ export const ChapterForm = ({ courseId }: { courseId: string }) => {
             setEditable(false)
             setNewChapter("")
             router.refresh()
-            toast.success("Title update Successfully")
+            toast.success("New chapter added Successfully")
         }
 
 
@@ -106,7 +105,7 @@ export const ChapterForm = ({ courseId }: { courseId: string }) => {
             <div className='flex p-2 w-full gap-3 flex-col px-2'>
                 {
 
-                    courseChapters.map((chapter, index) => (
+                    chapters.map((chapter, index) => (
                         <div key={index}
                             draggable
                             onDragStart={() => startPos.current = index}
@@ -122,19 +121,14 @@ export const ChapterForm = ({ courseId }: { courseId: string }) => {
             <div>
                 {/* input and form and after chaning we will update / pathch the value and refrst the browser  */}
                 {
-                    editable ?
-                        <div className='flex flex-col gap-3'>
-                            <Input value={newChapter} placeholder='chapter name ...' onChange={(e) => setNewChapter(e.target.value)}  ></Input>
-                            <div>
-                                <Button onClick={handleChapterCreate} className='' variant={"default"} size={"sm"}>Save</Button>
-                            </div>
+                    editable &&
+                    <div className='flex flex-col gap-3'>
+                        <Input value={newChapter} placeholder='chapter name ...' onChange={(e) => setNewChapter(e.target.value)}  ></Input>
+                        <div>
+                            <Button onClick={handleChapterCreate} className='' variant={"default"} size={"sm"}>Save</Button>
                         </div>
+                    </div>
 
-                        :
-
-                        <div className='font-light text-sm'>
-                            { }
-                        </div>
                 }
             </div>
         </div>

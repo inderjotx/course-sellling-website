@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 
 export function TitleForm({ title, id }: { title: string, id: string }) {
 
+    console.log('titel clietn')
 
     const [editable, setEditable] = useState<boolean>(false)
     const [courseTitle, setCourseTitle] = useState<string>(title)

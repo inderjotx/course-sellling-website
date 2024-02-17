@@ -1,28 +1,53 @@
+'use client'
 import { CourseBadge } from '@/components/CourseBadge'
 import { db } from '@/db'
 import { chapter } from '@/db/schema/course'
 import { List } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChapterForm } from './_components/ChapterForm'
+import { getChapters } from '@/actions/getChapters'
 
 
+interface ChapterFormProps {
+    title: string,
+    id: number,
+    order: number,
+    isPublished: boolean | null
+}
 
-export default async function page({ params }: { params: { courseId: string } }) {
+export default function Chapter() {
 
 
-    const value = await db.query.chapter.findMany({
-        where(fields, operators) {
-            return operators.eq(fields.courseId, parseInt(params.courseId))
-        },
-        columns: {
-            title: true,
-            id: true,
-            order: true,
-            isPublished: true,
+    const [chapters, setChapters] = useState<ChapterFormProps[]>([])
+
+
+    useEffect(() => {
+
+        const updateChpaters = async () => {
+            const data = await getChapters('1')
+            console.log(data)
+            if (data) {
+                setChapters(data)
+            }
         }
-        ,
-        orderBy: chapter.order
-    })
+
+        updateChpaters()
+
+    }, [])
+
+    // const value = await db.query.chapter.findMany({
+    //     where(fields, operators) {
+    //         return operators.eq(fields.courseId, parseInt(params.courseId))
+    //     },
+    //     columns: {
+    //         title: true,
+    //         id: true,
+    //         order: true,
+    //         isPublished: true,
+    //     }
+    //     ,
+    //     orderBy: chapter.order
+    // })
 
 
 
@@ -33,7 +58,7 @@ export default async function page({ params }: { params: { courseId: string } })
                 <CourseBadge Icon={List} Heading={'Course Chapters'} />
             </div>
             <div>
-                <ChapterForm courseId={params.courseId} />
+                <ChapterForm chapters={chapters} courseId={'1'} />
             </div>
         </div>
     )
