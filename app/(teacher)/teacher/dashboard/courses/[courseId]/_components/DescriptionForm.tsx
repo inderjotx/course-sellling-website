@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 
 
 
-export function DescriptionForm({ description, id }: { description: string, id: string }) {
+export function DescriptionForm({ description, id }: { description: string, id: number }) {
 
 
     console.log('descritpion clietn')
@@ -42,12 +42,12 @@ export function DescriptionForm({ description, id }: { description: string, id: 
     return (
         <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md  font-semibold'>Course  Description</h1>
+                <h1 className='text-md  font-semibold'>Description</h1>
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                     {
                         editable ?
                             <>
-                                <Button variant={"ghost"} > Cancel </Button>
+                                <Button variant={"link"} > Cancel </Button>
                             </>
                             :
 

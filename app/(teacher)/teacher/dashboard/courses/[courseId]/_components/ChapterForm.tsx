@@ -14,13 +14,12 @@ import { Chapter } from '@/db'
 
 
 
-export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string }) => {
+export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: number }) => {
 
     console.log('chpater form')
     const [editable, setEditable] = useState<boolean>(false)
     const [newChapter, setNewChapter] = useState<string>("")
     const [courseChapters, setcourseChapters] = useState<Chapter[]>(chapters)
-    const [fetch, setFetch] = useState(false)
     const router = useRouter()
     const startPos = useRef<number>(0)
     const endPos = useRef<number>(0)
@@ -59,14 +58,13 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string 
     const handleChapterCreate = async () => {
 
         // console.log(newChapter)
-        const response = await addChapter(parseInt(id), newChapter)
+        const response = await addChapter(id, newChapter)
         if (!response) {
             setNewChapter("")
             router.refresh()
             toast.error("Error Updating Title, Retry")
         }
         else {
-            setFetch((prev) => !prev)
             setEditable(false)
             setNewChapter("")
             router.refresh()
@@ -78,9 +76,9 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string 
 
 
     return (
-        <div className='flex w-full h-full flex-col gap-2'>
+        <div className='flex w-full  flex-col gap-2'>
             <CourseBadge Icon={List} Heading={'Course Chapters'} />
-            <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
+            <div className='bg-blue-100/50 flex rounded-sm  flex-col  px-6 py-5 '>
                 <div className='flex items-center justify-between'>
                     <h1 className='text-md font-semibold'>Course Title </h1>
                     <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
@@ -98,7 +96,7 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string 
                         }
                     </div>
                 </div>
-                <div className='flex p-2 w-full gap-3 flex-col px-2'>
+                <div className='flex p-2 w-full gap-3  flex-col px-2'>
                     {
 
                         courseChapters.map((chapter, index) => (
@@ -107,7 +105,7 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: string 
                                 onDragStart={() => startPos.current = index}
                                 onDragEnter={() => endPos.current = index}
                                 onDragEnd={async () => await changePostion()}
-                                className='w-full rounded-md overflow-hidden'  >
+                                className='w-full rounded-md overflow-hidden first:mt-4'  >
                                 <ChapterColumn title={chapter.title} courseId={chapter.courseId} chapterId={chapter.id} isPublished={chapter.isPublished} />
                             </div>
                         ))

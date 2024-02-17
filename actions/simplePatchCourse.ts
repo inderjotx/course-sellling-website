@@ -9,7 +9,7 @@ import { and, eq } from "drizzle-orm";
 
 
 
-export const simplePathCourse = async (id: string, key: "title" | "description" | "price" | "thumbnail", value: string | number) => {
+export const simplePathCourse = async (id: number, key: "title" | "description" | "price" | "thumbnail", value: string | number) => {
 
 
     const session = await auth()
@@ -20,7 +20,7 @@ export const simplePathCourse = async (id: string, key: "title" | "description" 
     }
     // we have course id 
 
-    const isUpdate = await db.update(course).set({ [key]: [value] }).where(and(eq(course.id, parseInt(id, 10)))).returning({ [key]: course[`${key}`] })
+    const isUpdate = await db.update(course).set({ [key]: [value] }).where(and(eq(course.id, id))).returning({ [key]: course[`${key}`] })
 
     console.log(isUpdate)
 

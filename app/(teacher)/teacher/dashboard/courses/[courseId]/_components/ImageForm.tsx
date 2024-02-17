@@ -10,7 +10,7 @@ import Image from "next/image"
 
 
 
-export function ImageForm({ imageUrl, id }: { imageUrl: string, id: string }) {
+export function ImageForm({ imageUrl, id }: { imageUrl: string, id: number }) {
 
 
     const [editable, setEditable] = useState<boolean>(false)

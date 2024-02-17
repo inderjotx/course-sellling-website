@@ -12,7 +12,7 @@ import { CourseBadge } from '@/components/CourseBadge'
 
 
 
-export function PriceForm({ price, id }: { price: string, id: string }) {
+export function PriceForm({ price, id }: { price: string, id: number }) {
 
     const [editable, setEditable] = useState<boolean>(false)
     const [coursePrice, setcoursePrice] = useState<string>(price)

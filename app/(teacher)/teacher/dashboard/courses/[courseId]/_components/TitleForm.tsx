@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 
 
 
-export function TitleForm({ title, id }: { title: string, id: string }) {
+export function TitleForm({ title, id }: { title: string, id: number }) {
 
     console.log('titel clietn')
 
@@ -41,7 +41,7 @@ export function TitleForm({ title, id }: { title: string, id: string }) {
     return (
         <div draggable className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md font-semibold'>Course Title </h1>
+                <h1 className='text-md font-semibold'>Title </h1>
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                     {
                         editable ?

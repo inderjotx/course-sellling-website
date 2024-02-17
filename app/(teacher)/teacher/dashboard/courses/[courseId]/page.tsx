@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 
 
 
-export default async function page({ params }: { params: { courseId: string } }) {
+export default async function page({ params }: { params: { courseId: number } }) {
 
     const session = await auth()
 
@@ -27,7 +27,7 @@ export default async function page({ params }: { params: { courseId: string } })
 
     const course = await db.query.course.findFirst({
         where(fields, operators) {
-            return operators.and(operators.eq(fields.id, parseInt(params.courseId)), operators.eq(fields.creatorId, session!.user.id))
+            return operators.and(operators.eq(fields.id, params.courseId), operators.eq(fields.creatorId, session!.user.id))
         },
         with: {
             chapters: true

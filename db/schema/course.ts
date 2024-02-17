@@ -34,7 +34,8 @@ export const chapter = pgTable("chapter", {
     videoUrl: text("videoUrl"),
     title: text("title").notNull(),
     order: integer("order").notNull(),
-    courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" })
+    courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" }),
+    creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" }),
 })
 
 
@@ -71,6 +72,11 @@ export const courseRchapter = relations(chapter, ({ one }) => ({
         fields: [chapter.courseId],
         references: [course.id]
     })
+    ,
+    creator: one(users, {
+        fields: [chapter.creatorId],
+        references: [users.id]
+    })
 
 }))
 
@@ -79,7 +85,8 @@ export const courseRchapter = relations(chapter, ({ one }) => ({
 
 // many user <--> many course
 export const userManyuserCourse = relations(users, ({ many }) => ({
-    courses: many(userRelationCourse)
+    courses: many(userRelationCourse),
+    chapters: many(chapter),
 }))
 
 
