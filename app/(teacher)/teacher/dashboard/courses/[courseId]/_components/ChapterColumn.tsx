@@ -23,10 +23,11 @@ export default function ChapterColumn({ title, chapterId, courseId, isPublished 
                 <Grip className='h-4 w-4'></Grip>
             </div>
 
-            <div className='pl-2 text-sm'>
-                {title.substring(0, 5)}
+            <div className='pl-2 mr-1  text-sm flex-grow whitespace-nowrap overflow-hidden'>
+                {title}
             </div>
-            <div className='ml-auto flex   h-full items-center'>
+
+            <div className='ml-auto flex flex-none   h-full items-center'>
                 <Badge className=''>{isPublished ? "Active" : "Drafted"}</Badge>
                 <Link href={`/teacher/dashboard/courses/${courseId}/chapter/${chapterId}`} >
                     <div className='p-2  h-full flex items-center'>

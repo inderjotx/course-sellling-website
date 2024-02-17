@@ -9,6 +9,7 @@ import { addChapter } from '@/actions/addChapter'
 import ChapterColumn from './ChapterColumn'
 import { CourseBadge } from '@/components/CourseBadge'
 import { Chapter } from '@/db'
+import { updatePostion } from '@/actions/updatePosition'
 
 
 
@@ -32,27 +33,15 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: number 
         cloneArray[startPos.current] = cloneArray[endPos.current]
         cloneArray[endPos.current] = temp
 
+        const first = updatePostion(id, cloneArray[endPos.current].id, endPos.current)
+        const second = updatePostion(id, cloneArray[startPos.current].id, startPos.current)
+        const respnse = await Promise.all([first, second])
+        console.log(respnse)
+
         setcourseChapters(cloneArray)
 
     }
 
-
-    const handleUpdate = async () => {
-
-
-        // setEditable(false)
-        // const response = await simplePathCourse(id, "title", courseChapters)
-        // console.log(response)
-        // if (response != courseChapters) {
-        //     setcourseChapters("")
-        //     toast.error("Error Updating Title, Retry")
-        // }
-        // else {
-        //     router.refresh()
-        //     toast.success("Title update Successfully")
-        // }
-
-    }
 
 
     const handleChapterCreate = async () => {
@@ -70,6 +59,8 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: number 
             router.refresh()
             toast.success("New chapter added Successfully")
         }
+
+
 
 
     }

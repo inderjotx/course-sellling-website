@@ -13,6 +13,7 @@ import { PriceForm } from './_components/PriceForm';
 import { auth, signIn } from '@/auth';
 import { db } from '@/db';
 import { Button } from '@/components/ui/button';
+import { DeleteButton } from './_components/DeleteCourse';
 
 
 
@@ -41,7 +42,7 @@ export default async function page({ params }: { params: { courseId: number } })
         <div className='flex w-full h-screen flex-col gap-6'>
             <div className='flex px-4 justify-between mr-3 items-center mt-2'>
                 <Heading title={"Create Setup"} description={"Complete all fields"} />
-                <Button variant={"destructive"} size={"icon"} ><Trash2></Trash2> </Button>
+                <DeleteButton courseId={params.courseId} />
             </div>
             <div className='flex w-full h-full '>
                 <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>

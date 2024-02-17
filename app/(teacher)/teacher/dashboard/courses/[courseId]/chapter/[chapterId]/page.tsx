@@ -3,7 +3,7 @@ import { Heading } from '@/components/Heading'
 import { Button } from '@/components/ui/button'
 import { ourFileRouter } from '@/lib/uploadThing'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
-import { ArrowLeft, LayoutDashboard, Trash2 } from 'lucide-react'
+import { ArrowLeft, LayoutDashboard } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { extractRouterConfig } from 'uploadthing/server'
@@ -44,7 +44,6 @@ export default async function page({ params }: { params: { chapterId: number, co
                         <span>Back to Course Setup
                         </span>
                     </div>
-
                 </Link>
             </div>
             <div className='flex px-4 justify-between mr-3 items-center mt-2'>
