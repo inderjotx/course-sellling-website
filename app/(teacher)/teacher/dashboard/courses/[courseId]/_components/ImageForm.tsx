@@ -1,5 +1,5 @@
 'use client'
-import { Divide, ImageIcon, Pencil, PlusCircle } from 'lucide-react'
+import { CheckCircle2, Divide, ImageIcon, Pencil, PlusCircle } from 'lucide-react'
 import React, { Suspense, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { simplePathCourse } from '@/actions/simplePatchCourse'
@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { UploadButton, UploadDropzone } from '@/components/UploadThingComponents'
 import Image from "next/image"
+import { cn } from '@/lib/utils'
 
 
 
@@ -40,7 +41,12 @@ export function ImageForm({ imageUrl, id }: { imageUrl: string, id: number }) {
     return (
         <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md font-semibold'>Course Cover Image</h1>
+                <div className='flex gap-2 items-center'>
+                    <div className={cn(imageUrl != "" ? "text-green-400" : "text-gray-500")}>
+                        <CheckCircle2 className='w-5 h-5  ' ></CheckCircle2>
+                    </div>
+                    <h1 className='text-md font-semibold'>Cover Image </h1>
+                </div>
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center justify-center gap-2 cursor-pointer'>
                     {
                         editable ?

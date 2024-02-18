@@ -15,6 +15,7 @@ import { AccessControl } from './_components/AccessControl'
 import { VideoForm } from './_components/VideoForm'
 import { revalidatePath } from 'next/cache'
 import { DeleteButton } from './_components/DeleteButton'
+import { eq } from 'drizzle-orm'
 
 export default async function page({ params }: { params: { chapterId: number, courseId: number } }) {
 
@@ -51,7 +52,7 @@ export default async function page({ params }: { params: { chapterId: number, co
                 <div className='flex items-center justify-center gap-2'>
                     <form action={async () => {
                         "use server"
-                        await db.update(chapter).set({ isPublished: !value.isPublished })
+                        await db.update(chapter).set({ isPublished: !value.isPublished }).where(eq(chapter.id, params.chapterId))
                         revalidatePath(`/teacher/dashboard/courses/${params.courseId}/chapter/${params.chapterId}`)
                     }} >
                         <Button>{value.isPublished ? "Archive" : "Publish"}</Button>

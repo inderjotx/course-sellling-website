@@ -1,5 +1,5 @@
 'use client'
-import { Pencil } from 'lucide-react'
+import { CheckCircle2, Pencil } from 'lucide-react'
 import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -7,6 +7,8 @@ import { simplePathCourse } from '@/actions/simplePatchCourse'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
+import { CompleteTick } from './CompleteTick'
 
 
 
@@ -42,7 +44,7 @@ export function DescriptionForm({ description, id }: { description: string, id: 
     return (
         <div className='bg-blue-100/50 flex rounded-sm  flex-col gap-6 px-6 py-5 '>
             <div className='flex items-center justify-between'>
-                <h1 className='text-md  font-semibold'>Description</h1>
+                <CompleteTick value={description} content='Description' />
                 <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                     {
                         editable ?

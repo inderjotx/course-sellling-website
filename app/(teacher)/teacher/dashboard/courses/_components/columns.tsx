@@ -90,7 +90,7 @@ export const columns: ColumnDef<Course>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem className="">
-                            <Link className="flex items-center gap-3 " href={`/teacher/courses/edit/${id}`} >
+                            <Link className="flex items-center gap-3 " href={`/teacher/dashboard/courses/${id}`} >
                                 <Pencil className="w-4 h-4" ></Pencil>
                                 Edit
                             </Link>

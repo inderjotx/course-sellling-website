@@ -10,6 +10,7 @@ import ChapterColumn from './ChapterColumn'
 import { CourseBadge } from '@/components/CourseBadge'
 import { Chapter } from '@/db'
 import { updatePostion } from '@/actions/updatePosition'
+import { CompleteTick } from './CompleteTick'
 
 
 
@@ -65,13 +66,15 @@ export const ChapterForm = ({ chapters, id }: { chapters: Chapter[], id: number 
 
     }
 
+    const isCompleted = chapters.filter((chapter) => chapter.isPublished)
+
 
     return (
         <div className='flex w-full  flex-col gap-2'>
             <CourseBadge Icon={List} Heading={'Course Chapters'} />
             <div className='bg-blue-100/50 flex rounded-sm  flex-col  px-6 py-5 '>
                 <div className='flex items-center justify-between'>
-                    <h1 className='text-md font-semibold'>Course Title </h1>
+                    <CompleteTick content='Chapters' isCompleted={isCompleted.length != 0} />
                     <div onClick={() => setEditable((prev) => !prev)} className='flex items-center gap-2 cursor-pointer'>
                         {
                             editable ?

@@ -14,6 +14,7 @@ import { auth, signIn } from '@/auth';
 import { db } from '@/db';
 import { Button } from '@/components/ui/button';
 import { DeleteButton } from './_components/DeleteCourse';
+import PublishButton from './_components/PublishButton';
 
 
 
@@ -36,13 +37,27 @@ export default async function page({ params }: { params: { courseId: number } })
     })
 
 
+    function getRatio() {
+        let completed = 0
+        completed += (course && (course.title != null || course.title != "")) ? 1 : 0
+        completed += (course && (course.description != null || course.description != "")) ? 1 : 0
+        completed += (course && (course.price != null)) ? 1 : 0
+        completed += (course && (course.thumbnail != null)) ? 1 : 0
+        const publishedChapters = course!.chapters.filter((chapter) => chapter.isPublished)
+        completed += (publishedChapters.length != 0) ? 1 : 0
+        return completed
+    }
 
+    const TOTAL_FIELDS = 5
 
     return (
         <div className='flex w-full h-screen flex-col gap-6'>
             <div className='flex px-4 justify-between mr-3 items-center mt-2'>
-                <Heading title={"Create Setup"} description={"Complete all fields"} />
-                <DeleteButton courseId={params.courseId} />
+                <Heading title={"Create Setup"} description={`Complete all fields ${getRatio()}/${TOTAL_FIELDS}`} />
+                <div className='flex gap-2'>
+                    <PublishButton courseId={params.courseId} isPublished={course?.isPublished || false} isDisabled={getRatio() != TOTAL_FIELDS} />
+                    <DeleteButton courseId={params.courseId} />
+                </div>
             </div>
             <div className='flex w-full h-full '>
                 <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>

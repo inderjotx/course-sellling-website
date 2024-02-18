@@ -5,10 +5,11 @@ import {
     primaryKey,
     integer,
     serial,
-    boolean
+    boolean,
+    timestamp
 } from "drizzle-orm/pg-core"
 import { users } from "./user"
-
+import { timeStamp } from "console"
 
 
 // course <-> user , yet to create
@@ -23,6 +24,8 @@ export const course = pgTable("course", {
     isArchived: boolean("isArchived").notNull().default(false)
 
 })
+
+
 
 
 
@@ -57,13 +60,16 @@ export const muxDataChapter = relations(muxData, ({ one }) => ({
 
 
 
-export const userRelationCourse = pgTable("userRelationCourse", {
+
+
+export const purchases = pgTable("purchases", {
     courseId: integer("courseId").notNull().references(() => course.id, { onDelete: "cascade" }),
     userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+    boughtOn: timestamp("boughtOn").default(sql`CURRENT_TIMESTAMP`)
 }
     ,
     (table) => ({
-        pk: primaryKey(table.courseId, table.userId)
+        pk: primaryKey({ columns: [table.courseId, table.userId] })
     })
 )
 
@@ -72,7 +78,7 @@ export const userRelationCourse = pgTable("userRelationCourse", {
 // one course -> many users 
 export const courseSegments = relations(course, ({ many, one }) => ({
     chapters: many(chapter),
-    users: many(userRelationCourse),
+    users: many(purchases),
     creator: one(users, {
         fields: [course.creatorId],
         references: [users.id],
@@ -100,7 +106,7 @@ export const courseRchapter = relations(chapter, ({ one, many }) => ({
 
 // many user <--> many course
 export const userManyuserCourse = relations(users, ({ many }) => ({
-    courses: many(userRelationCourse),
+    courses: many(purchases),
     chapters: many(chapter),
 }))
 
@@ -108,13 +114,13 @@ export const userManyuserCourse = relations(users, ({ many }) => ({
 
 // userRelationCouse -> course
 // userRelationCouse -> user
-export const usersToGroupsRelations = relations(userRelationCourse, ({ one }) => ({
+export const usersToGroupsRelations = relations(purchases, ({ one }) => ({
     course: one(users, {
-        fields: [userRelationCourse.userId],
+        fields: [purchases.userId],
         references: [users.id],
     }),
     user: one(course, {
-        fields: [userRelationCourse.courseId],
+        fields: [purchases.courseId],
         references: [course.id],
     }),
 }));

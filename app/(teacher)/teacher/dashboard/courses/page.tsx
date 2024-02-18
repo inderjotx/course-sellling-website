@@ -7,32 +7,6 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
 
-const courses = [
-    {
-        title: "Introduction to JavaScript",
-        price: "20.44",
-        status: "active",
-        id: "294029"
-    },
-    {
-        title: "Advanced React Development",
-        price: "35.99",
-        status: "active",
-        id: "294029"
-    },
-    {
-        title: "Python Fundamentals",
-        price: "25.75",
-        status: "drafted",
-        id: "294029"
-    },
-    {
-        title: "Machine Learning Basics",
-        price: "40.20",
-        status: "archived",
-        id: "294029"
-    }
-];
 
 export default async function page() {
 
@@ -49,19 +23,19 @@ export default async function page() {
         },
     })
 
-    const filteredCourses = data.map((course) => ({
-        id: course.id,
-        title: course.title,
-        price: course.price,
-        status: course.isArchived ? "archived" : "active"
-    })) satisfies Course[]
-
     console.log(data)
+    const filteredData = data.map((course) => ({
+        title: course.title,
+        status: (course.isPublished) ? "Active" : "Inactive",
+        price: course.price || 0,
+        id: course.id
+    }))
+
 
 
     return (
         <div className='flex'>
-            <DataTable columns={columns} data={courses} />
+            <DataTable columns={columns} data={filteredData} />
         </div>
     )
 }
