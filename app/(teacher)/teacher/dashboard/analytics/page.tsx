@@ -1,6 +1,6 @@
 import { teacherAnalytics } from '@/actions/analytics'
 import React from 'react'
-import { Example } from './_components/Chart'
+import { Chart } from './_components/Chart'
 
 const dummyData = {
     "courseAnalytics": [
@@ -20,10 +20,11 @@ const dummyData = {
 export default async function page() {
 
 
-    // const data = await teacherAnalytics()
-    // console.log(data)
-
     return (
-        <Example />
+        <div className='w-full h-screen'>
+            <div className='flex  h-full w-full justify-center items-center'>
+                <Chart data={dummyData.courseAnalytics} />
+            </div>
+        </div>
     )
 }

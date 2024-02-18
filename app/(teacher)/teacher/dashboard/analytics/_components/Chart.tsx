@@ -1,44 +1,120 @@
 'use client'
-import React, { PureComponent } from 'react';
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useEffect, useState } from "react";
 
-const dummyData = {
-    "courseAnalytics": [
-        { "sales": 0, "money": 0, "courseId": 1, "title": "React JS Course" },
-        { "sales": 10, "money": 500, "courseId": 2, "title": "Python Programming Course" },
-        { "sales": 15, "money": 750, "courseId": 3, "title": "Machine Learning Course" },
-        { "sales": 5, "money": 250, "courseId": 4, "title": "Web Development Bootcamp" },
-        { "sales": 8, "money": 400, "courseId": 5, "title": "Data Science Fundamentals" },
-        { "sales": 12, "money": 600, "courseId": 6, "title": "Java Masterclass" }
-    ],
-    "totalSales": 50,
-    "totalMoney": 2500
-}
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
 
-export const Example = () => {
+type DataPoint = {
+    title: string;
+    money: number;
+    sales: number;
+    courseId: number;
+};
 
+
+
+type ChartProps = {
+    data: DataPoint[];
+};
+
+
+export const Chart: React.FC<ChartProps> = ({ data }) => {
+    const [isClient, setIsClient] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     return (
-        <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-                width={500}
-                height={300}
-                data={dummyData.courseAnalytics}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="title" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="money" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
-            </BarChart>
-        </ResponsiveContainer>
+        <>
+            {isClient ? (
+                <ResponsiveContainer width={800} height={300} >
+                    <BarChart data={data}>
+                        <Legend
+                            layout="vertical"
+                            verticalAlign="top"
+                            align="right"
+                            content={<CustomLegend />}
+                        />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="title" fontSize={10} interval={0} tick={<CustomTick />} />
+                        <YAxis
+                            fontSize={12}
+                            tickLine={false}
+                            axisLine={false}
+                            tickFormatter={(value) => `$${value}`
+                            }
+                        />
+                        <Tooltip
+                            content={<CustomTooltip />}
+                        />
+                        <Bar dataKey="money" fill="#1c1c1c" className="rounded-md overflow-hidden" radius={[8, 8, 0, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
+            ) : (
+                <h2>Loading ....</h2>
+            )}
+        </>
     );
+};
+
+
+const CustomTick = (props: any) => {
+    const { x, y, payload } = props;
+
+    return (
+        <foreignObject x={x} y={y} width={100} className="overflow-visible h-60" >
+            <div className="-translate-x-12 py-0 text-center text-muted-foreground text-[11px]">{payload.value}
+            </div>
+        </foreignObject>
+    );
+};
+
+
+interface CustomTooltipProps {
+    active?: boolean;
+    payload?: any[];
+    label?: string;
 }
 
+const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-white  rounded p-4 border">
+                <p className="text-sm">{`${label}`}</p>
+                <p className="text-sm">
+                    {`${payload[0].name} : $${payload[0].value}`}
+                </p>
+            </div>
+        );
+    }
+
+}
+
+
+
+interface CustomLegendProps {
+    payload?: any[];
+    className?: string;
+}
+
+const CustomLegend: React.FC<CustomLegendProps> = ({ payload, className }) => {
+    return (
+        <div className={`flex flex-wrap translate-x-4 ${className}`}>
+            {payload?.map((entry, index) => (
+                <div key={`item-${index}`} className="flex items-center mr-4 mb-2">
+                    <div className="w-4 h-4 mr-1" style={{ backgroundColor: entry.color }}></div>
+                    <span className="text-sm">{entry.value}</span>
+                </div>
+            ))}
+        </div>
+    );
+};
