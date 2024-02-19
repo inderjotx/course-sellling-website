@@ -16,7 +16,7 @@ export default async function page() {
             <div className=''>
                 {
                     data.map((CouseData, index) => (
-                        <Card key={index} course={CouseData} numberOfChapter={CouseData.noOfChaptersDone} progress={CouseData.percentage} isPurchased={true} />
+                        <Card key={index} course={CouseData} numberOfChapter={CouseData.noOfChapters} progress={CouseData.percentage} isPurchased={true} />
                     ))
                 }
             </div>

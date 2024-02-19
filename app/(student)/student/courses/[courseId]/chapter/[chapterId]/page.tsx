@@ -9,6 +9,7 @@ export default async function page({ params }: { params: { courseId: number, cha
         }
     })
 
+    console.log(courseData)
     if (!courseData) {
         return <h1>Something weird happened !!!  </h1>
     }
@@ -19,7 +20,7 @@ export default async function page({ params }: { params: { courseId: number, cha
 
     return (
         <div>
-
+            We are in the chapter data page
         </div>
     )
 }

@@ -11,7 +11,7 @@ export function IconBadge({ Icon, size, className }: {
 
     const Map = {
         "small": "w-4 h-4",
-        "medium": "w-10 h-10",
+        "medium": "w-6 h-6",
         "large": "w-12 h-12",
     }
 

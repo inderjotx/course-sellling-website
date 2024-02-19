@@ -12,7 +12,6 @@ import { ChapterForm } from './_components/ChapterForm';
 import { PriceForm } from './_components/PriceForm';
 import { auth, signIn } from '@/auth';
 import { db } from '@/db';
-import { Button } from '@/components/ui/button';
 import { DeleteButton } from './_components/DeleteCourse';
 import PublishButton from './_components/PublishButton';
 
@@ -32,7 +31,11 @@ export default async function page({ params }: { params: { courseId: number } })
             return operators.and(operators.eq(fields.id, params.courseId), operators.eq(fields.creatorId, session!.user.id))
         },
         with: {
-            chapters: true
+            chapters: {
+                orderBy(fields, operators) {
+                    return operators.asc(fields.order)
+                },
+            }
         }
     })
 
