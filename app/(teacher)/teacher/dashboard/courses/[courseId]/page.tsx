@@ -59,8 +59,8 @@ export default async function page({ params }: { params: { courseId: number } })
                     <DeleteButton courseId={params.courseId} />
                 </div>
             </div>
-            <div className='flex w-full h-full '>
-                <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>
+            <div className='w-full h-full grid grid-cols-2 '>
+                <div className=' flex flex-col col-span-2 lg:col-span-1  gap-6  px-4 py-4'>
                     {/* first three block */}
                     <CourseBadge Icon={LayoutDashboard} Heading='Customize Your Course' >
                     </CourseBadge>
@@ -73,7 +73,7 @@ export default async function page({ params }: { params: { courseId: number } })
 
                 </div>
 
-                <div className=' flex flex-col w-1/2 gap-6 py-4  px-4'>
+                <div className=' flex flex-col  col-span-2 lg:col-span-1 gap-6 py-4  px-4'>
                     {/* other three block */}
                     <ChapterForm chapters={course?.chapters || []} id={params.courseId} />
                     <PriceForm price={course?.price?.toString() || ""} id={params.courseId} />

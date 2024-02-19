@@ -60,8 +60,8 @@ export default async function page({ params }: { params: { chapterId: number, co
                     <DeleteButton courseId={params.courseId} chapterId={params.chapterId} />
                 </div>
             </div>
-            <div className='flex w-full h-full '>
-                <div className=' flex flex-col w-1/2 gap-6  px-4 py-4'>
+            <div className='grid grid-cols-2 w-full h-full '>
+                <div className=' flex flex-col col-span-2 md:col-span-1 gap-6  px-4 py-4'>
                     {/* first three block */}
                     <CourseBadge Icon={LayoutDashboard} Heading='Customize Your Course' >
                     </CourseBadge>
@@ -74,7 +74,7 @@ export default async function page({ params }: { params: { chapterId: number, co
 
                 </div>
 
-                <div className=' flex flex-col w-1/2 gap-6 py-4  px-4'>
+                <div className=' flex flex-col col-span-2 md:col-span-1 gap-6 py-4  px-4'>
                     {/* other three block */}
                     <VideoForm courseId={params.courseId} chapterId={value.id} assetId={value?.muxData?.[0]?.playbackId || ""} />
                 </div>

@@ -14,32 +14,6 @@ export const metadata: Metadata = {
     description: "View Your Creator Dashboard",
 };
 
-const links = {
-    teacher: [{
-        href: '/teacher/dashboard/courses',
-        title: 'Courses'
-    },
-    {
-        href: '/teacher/dashboard/analytics',
-        title: 'Analytics'
-    }],
-    student: [{
-        href: '/',
-        title: 'My Dashboard'
-    },
-    {
-        href: '',
-        title: 'Discover'
-    }]
-}
-
-
-
-
-
-
-
-
 
 export default function RootLayout({
     children,
@@ -48,9 +22,6 @@ export default function RootLayout({
 }
 ) {
 
-    const headersList = headers()
-    const urlPath = headersList.get('next-url')
-    const key = urlPath?.startsWith('/teacher') ? "teacher" : "student"
 
     return (
         <html lang="en" suppressHydrationWarning >
@@ -64,23 +35,7 @@ export default function RootLayout({
 
                 <Navbar />
                 <Toaster />
-                <div className="flex h-screen w-full" >
-                    <div className="hidden lg:flex flex-col items-start border h-full  lg:w-1/6  ">
-                        {
-                            links[key].map(({ title, href }) => (
-                                <div key={title} className="w-full  cursor-pointer py-4 px-6 hover:bg-accent ">
-                                    <Link href={href} >
-                                        {title}
-                                    </Link>
-                                </div>
-                            ))
-                        }
-                    </div>
-                    <div className="w-full">
-                        {children}
-                    </div>
-
-                </div>
+                {children}
             </body>
         </html>
     );

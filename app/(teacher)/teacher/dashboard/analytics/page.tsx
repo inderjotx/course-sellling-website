@@ -22,7 +22,20 @@ export default async function page() {
 
     return (
         <div className='w-full h-screen'>
-            <div className='flex  h-full w-full justify-center items-center'>
+            <div className='flex flex-col gap-6 h-full w-full mt-6  px-4'>
+                <div className='flex gap-4 w-full'>
+                    <div className='h-28 w-1/2 rounded-md border flex justify-center items-center flex-col' >
+
+                        <div className='font-semibold' >Sales</div>
+                        <div className='text-2xl font-bold' >{dummyData.totalSales}</div>
+
+
+                    </div>
+                    <div className='h-28 w-1/2 border flex justify-center items-center rounded-md flex-col' >
+                        <div className='font-semibold' >Money</div>
+                        <div className='text-2xl font-bold' >${dummyData.totalMoney}</div>
+                    </div>
+                </div>
                 <Chart data={dummyData.courseAnalytics} />
             </div>
         </div>

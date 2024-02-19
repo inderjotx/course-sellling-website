@@ -36,13 +36,12 @@ export const Chart: React.FC<ChartProps> = ({ data }) => {
     return (
         <>
             {isClient ? (
-                <ResponsiveContainer width={800} height={300} >
+                <ResponsiveContainer height={400} className={"w-full border rounded-md p-4"} >
                     <BarChart data={data}>
                         <Legend
-                            layout="vertical"
-                            verticalAlign="top"
-                            align="right"
-                            content={<CustomLegend />}
+                            layout="horizontal"
+                            verticalAlign="bottom"
+                            align="left"
                         />
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="title" fontSize={10} interval={0} tick={<CustomTick />} />

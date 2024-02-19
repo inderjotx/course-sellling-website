@@ -25,6 +25,38 @@ export const course = pgTable("course", {
 
 })
 
+// userId 
+// chapterId 
+// whenCompleted
+export const progress = pgTable("progress", {
+    userId: text("userId").notNull().references(() => users.id),
+    chapterId: integer("chapterId").notNull().references(() => chapter.id),
+    courseId: integer("courseId").notNull().references(() => course.id),
+    completeOn: timestamp("completedOn").default(sql`CURRENT_TIMESTAMP`)
+
+}, (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.chapterId] })
+}))
+
+
+
+export const progressRelastion = relations(progress, ({ one }) => ({
+    course: one(course, {
+        fields: [progress.courseId],
+        references: [course.id],
+    }),
+    chapter: one(chapter, {
+        fields: [progress.chapterId],
+        references: [chapter.id],
+    }),
+    user: one(users, {
+        fields: [progress.courseId],
+        references: [users.id],
+    }),
+}))
+
+
+
 
 
 
@@ -79,6 +111,7 @@ export const purchases = pgTable("purchases", {
 export const courseSegments = relations(course, ({ many, one }) => ({
     chapters: many(chapter),
     users: many(purchases),
+    progress: many(progress),
     creator: one(users, {
         fields: [course.creatorId],
         references: [users.id],
@@ -98,7 +131,8 @@ export const courseRchapter = relations(chapter, ({ one, many }) => ({
         references: [users.id]
     })
     ,
-    muxData: many(muxData)
+    muxData: many(muxData),
+    progress: many(progress),
 }))
 
 
@@ -108,6 +142,7 @@ export const courseRchapter = relations(chapter, ({ one, many }) => ({
 export const userManyuserCourse = relations(users, ({ many }) => ({
     courses: many(purchases),
     chapters: many(chapter),
+    progress: many(progress),
 }))
 
 
@@ -115,11 +150,11 @@ export const userManyuserCourse = relations(users, ({ many }) => ({
 // userRelationCouse -> course
 // userRelationCouse -> user
 export const usersToGroupsRelations = relations(purchases, ({ one }) => ({
-    course: one(users, {
+    users: one(users, {
         fields: [purchases.userId],
         references: [users.id],
     }),
-    user: one(course, {
+    course: one(course, {
         fields: [purchases.courseId],
         references: [course.id],
     }),
