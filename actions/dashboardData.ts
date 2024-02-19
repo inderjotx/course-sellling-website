@@ -17,15 +17,17 @@ import { sql } from 'drizzle-orm'
 
 // 
 
-interface CourseWithProgress extends Course {
+export interface CourseWithProgress extends Course {
     isCompleted: boolean,
-    percentage: number
+    percentage: number,
+    noOfChapters: number,
+    noOfChaptersDone: number
 }
 
 
 
 
-export async function userSpecificCouseData(): Promise<CourseWithProgress[]> {
+export async function userSpecificCourseData(): Promise<CourseWithProgress[]> {
 
     const session = await auth()
 
@@ -84,17 +86,18 @@ export async function userSpecificCouseData(): Promise<CourseWithProgress[]> {
     })
 
 
+
     const chapterDone = await Promise.all(courseProgressStatusPromise)
 
     const data: CourseWithProgress[] = purchasedCourses.map(({ course }, index) => {
         return {
             ...course,
             isCompleted: chapterDone[index].length == allChpater[index].length,
+            noOfChapters: allChpater[index].length,
+            noOfChaptersDone: chapterDone[index].length,
             percentage: (chapterDone[index].length / allChpater[index].length) * 100
         }
     })
-
     return data
-
 
 } 
