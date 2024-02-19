@@ -2,6 +2,7 @@ import { db } from '@/db'
 import { course } from '@/db/schema/course'
 import React from 'react'
 import Card from '../_components/Card'
+import Link from 'next/link'
 
 export default async function page() {
 
@@ -13,6 +14,10 @@ export default async function page() {
                 }
             }
         }
+        ,
+        where(fields, operators) {
+            return operators.eq(fields.isArchived, false)
+        },
     })
 
 
@@ -21,7 +26,9 @@ export default async function page() {
             <div className=''>
                 {
                     data.map((CouseData, index) => (
-                        <Card key={index} progress={0} isPurchased={false} numberOfChapter={CouseData.chapters.length} course={CouseData} />
+                        <Link key={index} href={`/student/courses/${CouseData.id}`}>
+                            <Card key={index} progress={0} isPurchased={false} numberOfChapter={CouseData.chapters.length} course={CouseData} />
+                        </Link>
                     ))
                 }
             </div>

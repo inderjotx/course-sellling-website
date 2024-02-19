@@ -32,7 +32,7 @@ export const progress = pgTable("progress", {
     userId: text("userId").notNull().references(() => users.id),
     chapterId: integer("chapterId").notNull().references(() => chapter.id),
     courseId: integer("courseId").notNull().references(() => course.id),
-    completeOn: timestamp("completedOn").default(sql`CURRENT_TIMESTAMP`)
+    completeOn: timestamp("completedOn").default(sql`CURRENT_TIMESTAMP`),
 
 }, (table) => ({
     pk: primaryKey({ columns: [table.userId, table.chapterId] })
