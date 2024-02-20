@@ -31,13 +31,7 @@ export default function RootLayout({
 
                 <Navbar />
                 <Toaster />
-                <div className="flex h-screen w-full" >
-                    <Sidebar />
-                    <div className="w-full px-4 pt-5">
-                        {children}
-                    </div>
-
-                </div>
+                {children}
             </body>
         </html>
     )
