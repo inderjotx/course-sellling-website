@@ -1,4 +1,5 @@
 'use server'
+import { auth } from '@/auth'
 import { db } from '@/db'
 import { course } from '@/db/schema/course'
 import { eq } from 'drizzle-orm'
@@ -13,16 +14,28 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 
 
-export async function getStripeIntent(courseId: number) {
+export async function getStripeIntent(courseId: number,) {
 
     const headersList = headers()
+
+    const session = await auth()
+    const userId = session?.user.id
+    if (!userId) {
+        return null
+    }
+
     const couseData = await getCourseData(courseId)
+
+
+
+
     const lineItems = {
         price_data: {
             currency: "USD",
             product_data: {
                 name: couseData.name,
             },
+            userId: userId,
             unit_amount: (couseData.price || 100) * 100,
         },
         quantity: 1
@@ -34,7 +47,11 @@ export async function getStripeIntent(courseId: number) {
             line_items: [lineItems],
             mode: "payment",
             success_url: `${headersList.get("origin")}/teacher/dashboard/courses`,
-            cancel_url: `${headersList.get("origin")}/student/courses`
+            cancel_url: `${headersList.get("origin")}/student/courses`,
+            metadata: {
+                courseId: couseData.id,
+                userId: userId
+            }
         })
 
 
@@ -52,6 +69,6 @@ export async function getStripeIntent(courseId: number) {
 
 
 const getCourseData = async (courseId: number) => {
-    const courseData = await db.select({ name: course.title, price: course.price }).from(course).where(eq(course.id, courseId))
+    const courseData = await db.select({ name: course.title, price: course.price, id: course.id }).from(course).where(eq(course.id, courseId))
     return courseData[0]
 }

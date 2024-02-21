@@ -14,7 +14,6 @@ import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { title } from 'process'
 import { DataSideBar } from '@/components/DataSideBar'
-import { BuyButton } from './_components/BuyButton'
 import { StripePay } from '@/components/StripeCard'
 
 
@@ -203,10 +202,4 @@ export default async function page({ params }: { params: { courseId: number } })
 
 
 
-
-
-// {
-//     session &&
-//     <BuyButton userId={session.user.id} courseId={params.courseId} />
-// }
 
