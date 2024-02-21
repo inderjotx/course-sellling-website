@@ -17,11 +17,11 @@ export const course = pgTable("course", {
     id: serial("id").notNull().primaryKey(),
     title: text("title").notNull(),
     description: text("description"),
+    isPublic: boolean("isPublic").default(false),
     isPublished: boolean("isPublished").default(false),
     thumbnail: text("thumbnail"),
     price: integer("price"),
     creatorId: text("creatorId").notNull().references(() => users.id, { onDelete: "cascade" }),
-    isArchived: boolean("isArchived").notNull().default(false)
 
 })
 

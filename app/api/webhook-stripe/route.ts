@@ -10,6 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 )
 
 export async function POST(req: Request) {
+    console.log("request received")
     const body = await req.text();
     const sig = headers().get('Stripe-Signature') as string;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -20,16 +21,17 @@ export async function POST(req: Request) {
         if (!sig || !webhookSecret) return;
         event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
     } catch (err: any) {
-        console.log(`❌ Error message: ${err.message}`);
+        console.log(`❌ Error message: ${err.message}`)
         return new Response(`Webhook Error: ${err.message}`, { status: 400 });
     }
 
     try {
         switch (event.type) {
             case 'checkout.session.completed':
+                console.log(event.data.object.metadata)
                 break;
             default:
-                throw new Error('Unhandled relevant event!');
+                console.log(event.type)
         }
     } catch (error) {
         console.log(error);

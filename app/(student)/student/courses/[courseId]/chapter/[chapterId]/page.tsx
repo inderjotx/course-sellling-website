@@ -1,10 +1,11 @@
 import { DataSideBar } from '@/components/DataSideBar'
 import { db } from '@/db'
 import React from 'react'
+import { ChapterView } from '../../_components/Chapter'
 
 export default async function page({ params }: { params: { courseId: number, chapterId: number } }) {
 
-    const courseData = await db.query.chapter.findFirst({
+    const curChapter = await db.query.chapter.findFirst({
         where(fields, operators) {
             return operators.eq(fields.id, params.chapterId)
         }
@@ -14,15 +15,23 @@ export default async function page({ params }: { params: { courseId: number, cha
                 columns: {
                     title: true,
                 }
+            },
+            muxData: {
+                columns: {
+                    playbackId: true
+                }
+
+                ,
+                limit: 1
             }
         }
     })
 
-    if (!courseData) {
+    if (!curChapter) {
         return
     }
 
-    const course = courseData.course
+    const course = curChapter.course
 
     const chapters = await db.query.chapter.findMany({
         where(fields, operators) {
@@ -49,8 +58,8 @@ export default async function page({ params }: { params: { courseId: number, cha
     })
 
 
-    console.log(courseData)
-    if (!courseData) {
+    console.log(curChapter)
+    if (!curChapter) {
         return <h1>Something weird happened !!!  </h1>
     }
 
@@ -60,17 +69,10 @@ export default async function page({ params }: { params: { courseId: number, cha
 
 
     return (
-        <div className="flex h-screen w-full" >
-            <DataSideBar data={sideBarData} />
+        <div className='h-full w-full'>
 
-            <div className="w-full px-4 pt-5">
-                <div className='h-full w-full'>
-
-
-                    {/* banner */}
-                    We are in the chapter data page
-                </div>
-            </div>
+            <ChapterView chapter={curChapter} courseId={params.courseId} />
+            {/* banner */}
         </div>
     )
 }

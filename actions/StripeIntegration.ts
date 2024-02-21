@@ -35,7 +35,6 @@ export async function getStripeIntent(courseId: number,) {
             product_data: {
                 name: couseData.name,
             },
-            userId: userId,
             unit_amount: (couseData.price || 100) * 100,
         },
         quantity: 1
@@ -46,7 +45,7 @@ export async function getStripeIntent(courseId: number,) {
             payment_method_types: ["card"],
             line_items: [lineItems],
             mode: "payment",
-            success_url: `${headersList.get("origin")}/teacher/dashboard/courses`,
+            success_url: `${headersList.get("origin")}/student/courses/${couseData.id}`,
             cancel_url: `${headersList.get("origin")}/student/courses`,
             metadata: {
                 courseId: couseData.id,

@@ -148,54 +148,49 @@ export default async function page({ params }: { params: { courseId: number } })
 
     return (
 
-        <div className="flex h-screen w-full" >
-            <DataSideBar data={sideBarData} />
-            <div className="w-full px-4 pt-5">
-                <div className='h-full w-full'>
+        <div className='h-full w-full'>
 
 
-                    {/* banner */}
-                    <div className='h-1/3 bg-gradient-to-r from-purple-100 to-purple-300 flex relative w-full border pl-4 rounded-md'>
+            {/* banner */}
+            <div className='h-1/3 bg-gradient-to-r from-purple-100 to-purple-300 flex relative w-full border pl-4 rounded-md'>
 
-                        {/* text info/ */}
-                        <div className='flex w-full py-4 pl-4 flex-col h-full justify-center'>
-                            <div className='flex flex-col '>
-                                <div className='font-bold text-3xl '>{course.title}</div>
-                                <div className='text-muted-foreground w-1/2 text-wrap'>{(course.description!.length > 100) ? course.description!.substring(100) + "..." : course.description}</div>
-                            </div>
-                            <div className='mt-5'>
-                                <div className='text-sm' >Instructor: <span className='font-semibold'>{creator.name}</span> </div>
-                                <div className='text-sm'>Email : <span className='font-semibold' >{creator.email}</span></div>
-                            </div>
-                        </div> {/* image card  */}
-                        <div className='w-60 h-72 absolute top-1/3 bg-white   lg:right-20 right-4 rounded-sm px-4 py-4 border'>
-                            <div className='relative h-2/3 w-full overflow-hidden rounded-sm '>
-                                <Image src={course.thumbnail || ""} fill sizes='100%'
-                                    alt='course thumbain '
-                                ></Image>
-                            </div>
-                            <div className='flex  flex-col items-center justify-center  h-1/3 '>
-                                <div  >{course.title}</div>
-                                <div><StripePay courseId={params.courseId} /> </div>
-                                {/* <div className='text-sm'  > <PaymentComponent amount={course.price || 10} /> </div> */}
-                            </div>
-                        </div>
+                {/* text info/ */}
+                <div className='flex w-full py-4 pl-4 flex-col h-full justify-center'>
+                    <div className='flex flex-col '>
+                        <div className='font-bold text-3xl '>{course.title}</div>
+                        <div className='text-muted-foreground w-1/2 text-wrap'>{(course.description!.length > 100) ? course.description!.substring(100) + "..." : course.description}</div>
                     </div>
-
-
-                    <div className='mt-10 pl-4 flex flex-col gap-2'>
-                        <div className='text-2xl my-4 font-serif' >Chapters</div>
-                        {
-                            chapters.map((chapter, index) => (
-                                <Link key={index} href={`/student/courses/${params.courseId}/chapter/${chapter.id}`}  >
-                                    <ChapterList key={index} index={index} title={chapter.title} description={chapter.description || ""} />
-                                </Link>
-                            ))
-                        }
+                    <div className='mt-5'>
+                        <div className='text-sm' >Instructor: <span className='font-semibold'>{creator.name}</span> </div>
+                        <div className='text-sm'>Email : <span className='font-semibold' >{creator.email}</span></div>
                     </div>
-
+                </div> {/* image card  */}
+                <div className='w-60 h-72 absolute top-1/3 bg-white   lg:right-20 right-4 rounded-sm px-4 py-4 border'>
+                    <div className='relative h-2/3 w-full overflow-hidden rounded-sm '>
+                        <Image src={course.thumbnail || ""} fill sizes='100%'
+                            alt='course thumbain '
+                        ></Image>
+                    </div>
+                    <div className='flex  flex-col items-center justify-center  h-1/3 '>
+                        <div  >{course.title}</div>
+                        <div><StripePay courseId={params.courseId} /> </div>
+                        {/* <div className='text-sm'  > <PaymentComponent amount={course.price || 10} /> </div> */}
+                    </div>
                 </div>
             </div>
+
+
+            <div className='mt-10 pl-4 flex flex-col gap-2'>
+                <div className='text-2xl my-4 font-serif' >Chapters</div>
+                {
+                    chapters.map((chapter, index) => (
+                        <Link key={index} href={`/student/courses/${params.courseId}/chapter/${chapter.id}`}  >
+                            <ChapterList key={index} index={index} title={chapter.title} description={chapter.description || ""} />
+                        </Link>
+                    ))
+                }
+            </div>
+
         </div>
     )
 }
