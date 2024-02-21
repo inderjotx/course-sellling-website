@@ -17,7 +17,7 @@ export default async function page() {
         }
         ,
         where(fields, operators) {
-            return operators.eq(fields.isArchived, false)
+            return operators.eq(fields.isPublished, true)
         },
     })
 

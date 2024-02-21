@@ -1,11 +1,12 @@
 
 import { Chapter, db } from '@/db'
-import MuxPlayer from '@mux/mux-player-react'
-import React, { use } from 'react'
+import React from 'react'
 import { ClientVideoPlayer } from './ChapterVideo'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/auth'
 import { progress } from '@/db/schema/course'
+import Link from 'next/link'
+import { moveNextChapter } from '@/actions/getNextChapter'
 
 interface ChapterProps extends Chapter {
     muxData: {
@@ -14,7 +15,7 @@ interface ChapterProps extends Chapter {
 }
 
 
-export async function ChapterView({ chapter, courseId }: { chapter: ChapterProps, courseId: number }) {
+export async function ChapterView({ chapter, courseId, hasPurchased, hasCompleted }: { chapter: ChapterProps, courseId: number, hasPurchased: boolean, hasCompleted: boolean }) {
 
     const session = await auth()
     const userId = session?.user.id
@@ -31,11 +32,24 @@ export async function ChapterView({ chapter, courseId }: { chapter: ChapterProps
             <div className='text-2xl ' >{chapter.title} </div>
             <form action={async () => {
                 "use server"
-                await db.insert(progress).values({ courseId: courseId, chapterId: chapter.id, userId: userId })
+                if (!hasCompleted) {
+                    await db.insert(progress).values({ courseId: courseId, chapterId: chapter.id, userId: userId })
+                    await moveNextChapter(courseId, chapter.order)
+                }
+
 
             }}>
-                <Button type='submit'  >MarkComplete</Button>
+
+                {
+                    hasPurchased ?
+                        <Button type='submit'>{hasCompleted ? "Completed" : "Mark Complete"}</Button>
+                        :
+                        <Link href={'/student/courses'} >
+                            <Button type='submit'  >Purchase</Button>
+                        </Link>
+                }
             </form>
+
 
 
             {/*  vidoe player */}

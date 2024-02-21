@@ -35,10 +35,10 @@ export default function Card({ course, isPurchased, progress, numberOfChapter }:
                 isPurchased ?
 
                     <div className={cn("flex flex-col gap-2")}>
-                        <div className='h-2 border rounded-sm relative' >
-                            <div className={cn('absolute bg-blue-500 h-full rounded-sm rounded-r-none', ('isCompleted' in course && course.isCompleted == true) && "bg-green-700")} style={{ width: `${course}` }}  ></div>
+                        <div className='h-2 border rounded-sm relative overflow-hidden ' >
+                            <div className={cn('absolute bg-blue-500 h-full rounded-sm rounded-r-none', ('isCompleted' in course && course.isCompleted == true) && "bg-green-700")} style={{ width: `${progress}%` }}  ></div>
                         </div>
-                        <div className={cn('text-blue-800 text-[12px]', ('isCompleted' in course && course.isCompleted == true) && "text-green-800")}>{progress} % Complete</div>
+                        <div className={cn('text-blue-800 text-[12px] ', (progress == 100) && "text-green-800")}>{progress} % Complete</div>
                     </div>
                     :
                     <div className='flex py-1 '>

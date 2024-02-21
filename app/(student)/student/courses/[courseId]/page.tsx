@@ -173,7 +173,15 @@ export default async function page({ params }: { params: { courseId: number } })
                     </div>
                     <div className='flex  flex-col items-center justify-center  h-1/3 '>
                         <div  >{course.title}</div>
-                        <div><StripePay courseId={params.courseId} /> </div>
+                        <div>
+                            {hasBought ?
+
+                                <Button className='bg-green-600' >Start Learning </Button>
+                                :
+                                <StripePay courseId={params.courseId} />
+                            }
+
+                        </div>
                         {/* <div className='text-sm'  > <PaymentComponent amount={course.price || 10} /> </div> */}
                     </div>
                 </div>

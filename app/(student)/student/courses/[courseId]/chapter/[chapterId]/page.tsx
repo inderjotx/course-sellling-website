@@ -1,9 +1,27 @@
-import { DataSideBar } from '@/components/DataSideBar'
 import { db } from '@/db'
 import React from 'react'
 import { ChapterView } from '../../_components/Chapter'
+import { auth, signIn } from '@/auth'
+import { redirect } from 'next/navigation'
 
 export default async function page({ params }: { params: { courseId: number, chapterId: number } }) {
+
+
+    const session = await auth()
+    if (!session) {
+        await signIn()
+        return
+    }
+
+    const userId = session.user.id
+
+    const hasPurchaged = (await db.query.purchases.findFirst({
+        where(fields, operators) {
+            return operators.and(operators.eq(fields.courseId, params.courseId), operators.eq(fields.userId, userId))
+        },
+    })) ? true : false
+
+
 
     const curChapter = await db.query.chapter.findFirst({
         where(fields, operators) {
@@ -14,6 +32,7 @@ export default async function page({ params }: { params: { courseId: number, cha
             course: {
                 columns: {
                     title: true,
+                    isPublic: true
                 }
             },
             muxData: {
@@ -32,6 +51,29 @@ export default async function page({ params }: { params: { courseId: number, cha
     }
 
     const course = curChapter.course
+
+
+    const progress = await db.query.progress.findFirst({
+        where(fields, operators) {
+            return operators.and(operators.eq(fields.courseId, params.courseId), operators.eq(fields.chapterId, params.chapterId), operators.eq(fields.userId, userId))
+        },
+    })
+
+    let hasCompleted = false
+    console.log("progresss")
+
+    if (progress) {
+        hasCompleted = true
+    }
+
+
+
+    // if not pulic or purchaded redirect back to purchage page 
+    if (!course.isPublic && !hasPurchaged && !curChapter.isPublic) {
+        redirect(`/student/courses/${params.courseId}`)
+    }
+
+
 
     const chapters = await db.query.chapter.findMany({
         where(fields, operators) {
@@ -71,7 +113,7 @@ export default async function page({ params }: { params: { courseId: number, cha
     return (
         <div className='h-full w-full'>
 
-            <ChapterView chapter={curChapter} courseId={params.courseId} />
+            <ChapterView chapter={curChapter} hasCompleted={hasCompleted} hasPurchased={hasPurchaged} courseId={params.courseId} />
             {/* banner */}
         </div>
     )

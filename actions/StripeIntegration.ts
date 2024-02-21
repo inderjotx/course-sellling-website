@@ -1,5 +1,5 @@
 'use server'
-import { auth } from '@/auth'
+import { auth, signIn } from '@/auth'
 import { db } from '@/db'
 import { course } from '@/db/schema/course'
 import { eq } from 'drizzle-orm'
@@ -21,7 +21,8 @@ export async function getStripeIntent(courseId: number,) {
     const session = await auth()
     const userId = session?.user.id
     if (!userId) {
-        return null
+        await signIn()
+        return
     }
 
     const couseData = await getCourseData(courseId)
